@@ -1,0 +1,27 @@
+# Campus AI — repository ignore rules (root)
+# ---------------------------------------------------------------
+# Files matched here are never tracked by Git.
+
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+client/dist/
+
+# Logs
+*.log
+
+# ---------------------------------------------------------------
+# Environment files — these hold real secrets (DATABASE_URL,
+# GEMINI_API_KEY, JWT_SECRET). NEVER commit them.
+# Only .env.example files (placeholders, no real values) may be
+# committed — they are re-included by the negation rule below.
+# ---------------------------------------------------------------
+.env
+server/.env
+client/.env
+.env.*
+server/.env.*
+client/.env.*
+!.env.example

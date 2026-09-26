@@ -1,0 +1,2393 @@
+/* ============================================================
+   Campus AI — editorial design system
+   A warm, academic palette with strong serif typography,
+   generous whitespace and hairline structure.
+   ============================================================ */
+
+:root {
+  /* --- Colour --- */
+  --paper: #f6f3ec;         /* warm ivory page background */
+  --surface: #fffdf8;       /* off-white cards */
+  --surface-raise: #ffffff; /* hover lift */
+  --ink: #26241e;           /* warm dark charcoal — primary text */
+  --ink-soft: #4b483f;      /* secondary text */
+  --muted: #7d786c;         /* tertiary / meta text */
+  --faint: #aaa493;         /* very quiet text */
+  --line: #e6e0d2;          /* hairline borders */
+  --line-strong: #d6cfbc;   /* stronger hairlines */
+  --accent: #43593f;        /* deep forest green */
+  --accent-ink: #33472f;    /* darker green for hover */
+  --accent-soft: #edf0e6;   /* sage wash */
+  --accent-line: #d4dbca;
+  --danger: #9c4433;        /* muted brick red */
+  --danger-bg: #f6ebe4;
+  --danger-line: #e3c9bb;
+  --shadow-tiny: 0 1px 2px rgba(38, 36, 30, 0.06);
+  --shadow-card: 0 1px 2px rgba(38, 36, 30, 0.05),
+    0 10px 28px -18px rgba(38, 36, 30, 0.22);
+
+  /* --- Type --- */
+  --serif: 'Iowan Old Style', 'Palatino Linotype', Palatino, 'Book Antiqua',
+    Georgia, 'Times New Roman', serif;
+  --sans: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue',
+    Arial, sans-serif;
+
+  /* --- Shape --- */
+  --radius-card: 10px;
+  --radius-small: 6px;
+}
+
+/* ============================================================
+   Layout
+   ============================================================ */
+
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main {
+  flex: 1;
+  width: 100%;
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 56px 28px 72px;
+}
+
+.section {
+  margin-bottom: 72px;
+}
+
+.section:last-child {
+  margin-bottom: 0;
+}
+
+/* Editorial section headings: tiny overline + serif heading */
+.section-head {
+  display: flex;
+  align-items: flex-end;
+  gap: 14px;
+  margin-bottom: 26px;
+}
+
+.section-head h2 {
+  font-family: var(--serif);
+  font-size: 30px;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+  line-height: 1.1;
+  color: var(--ink);
+}
+
+.kicker {
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0;
+}
+
+/* Right-aligned metadata chip hanging below the heading */
+.tag {
+  margin-left: auto;
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--ink-soft);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 4px 12px;
+  white-space: nowrap;
+}
+
+/* ============================================================
+   Icons
+   ============================================================ */
+
+.icon {
+  display: inline-flex;
+  line-height: 0;
+}
+
+.icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.icon--sm svg {
+  width: 14px;
+  height: 14px;
+}
+
+.icon--lg svg {
+  width: 21px;
+  height: 21px;
+}
+
+/* ============================================================
+   Header
+   ============================================================ */
+
+.site-header {
+  background: var(--paper);
+  border-bottom: 1px solid var(--line);
+}
+
+.header-inner {
+  max-width: 1040px;
+  margin: 0 auto;
+  height: 84px;
+  padding: 0 28px;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 20px;
+}
+
+/* Brand */
+.brand {
+  justify-self: start;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+
+.brand-mark {
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  background: var(--accent);
+  color: var(--surface);
+  display: grid;
+  place-items: center;
+}
+
+.brand-wordmark {
+  font-family: var(--serif);
+  font-size: 21px;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+  color: var(--ink);
+}
+
+.brand-wordmark em,
+.footer-brand em {
+  font-style: italic;
+  color: var(--accent);
+}
+
+/* Navigation — quiet editorial text links */
+.nav {
+  justify-self: center;
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.nav-link {
+  position: relative;
+  font-family: var(--sans);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink-soft);
+  text-decoration: none;
+  padding: 6px 1px;
+  transition: color 0.15s;
+}
+
+.nav-link:hover {
+  color: var(--ink);
+}
+
+/* Current page gets a small accent underline */
+.nav-link.is-current {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.nav-link.is-current::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background: var(--accent);
+}
+
+/* Profile area */
+.profile {
+  justify-self: end;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.profile-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-line);
+  color: var(--accent-ink);
+  font-family: var(--serif);
+  font-size: 12px;
+  font-weight: 700;
+  display: grid;
+  place-items: center;
+}
+
+.profile-info {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.profile-name {
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.profile-role {
+  font-family: var(--sans);
+  font-size: 11px;
+  color: var(--muted);
+}
+
+/* ============================================================
+   Buttons + links
+   ============================================================ */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-family: var(--sans);
+  font-size: 14px;
+  font-weight: 600;
+  padding: 12px 22px;
+  border-radius: var(--radius-small);
+  border: 1px solid transparent;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: var(--surface);
+}
+
+.btn-primary:hover {
+  background: var(--accent-ink);
+}
+
+.btn-link {
+  font-family: var(--sans);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink-soft);
+  text-decoration: none;
+  border-bottom: 1px solid var(--line-strong);
+  padding-bottom: 2px;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.btn-link:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+/* ============================================================
+   Hero
+   ============================================================ */
+
+.hero {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 56px;
+  align-items: center;
+  padding: 28px 0 76px;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 72px;
+}
+
+/* Editorial hero statement */
+.kicker + .hero-title {
+  margin-top: 18px;
+}
+
+.hero-title {
+  font-family: var(--serif);
+  font-size: clamp(44px, 6vw, 62px);
+  font-weight: 600;
+  letter-spacing: -1.4px;
+  line-height: 1.02;
+  color: var(--ink);
+  margin: 16px 0 0;
+}
+
+.hero-title em {
+  font-style: italic;
+  color: var(--accent);
+}
+
+.hero-lede {
+  font-family: var(--sans);
+  font-size: 17px;
+  line-height: 1.65;
+  color: var(--ink-soft);
+  max-width: 480px;
+  margin: 20px 0 30px;
+}
+
+.hero-actions {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  flex-wrap: wrap;
+}
+
+/* --- Small "Today" scene on the right (visual detail) --- */
+.scene {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  padding: 26px 0 34px;
+}
+
+/* Very subtle dot texture behind the card */
+.scene::before {
+  content: '';
+  position: absolute;
+  inset: 0 6% 6px;
+  background-image: radial-gradient(var(--line-strong) 1px, transparent 1px);
+  background-size: 18px 18px;
+  opacity: 0.5;
+}
+
+.scene-card {
+  position: relative;
+  width: 252px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 22px 24px 20px;
+  box-shadow: var(--shadow-card);
+}
+
+.scene-card--back {
+  position: absolute;
+  top: 44px;
+  right: 12%;
+  width: 252px;
+  height: 240px;
+  transform: rotate(3.5deg);
+  border-color: var(--line);
+}
+
+.scene-card--front {
+  transform: rotate(-2deg);
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/* Little bookmark tab */
+.scene-tab {
+  position: absolute;
+  top: -1px;
+  left: 24px;
+  width: 26px;
+  height: 10px;
+  background: var(--accent);
+  border-radius: 0 0 4px 4px;
+}
+
+.scene-kicker {
+  font-family: var(--sans);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.scene-date {
+  font-family: var(--serif);
+  font-size: 19px;
+  font-weight: 600;
+  color: var(--ink);
+  margin: 6px 0 14px;
+}
+
+.scene-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  width: 100%;
+  padding: 14px 0;
+  border-top: 1px dashed var(--line-strong);
+  border-bottom: 1px dashed var(--line-strong);
+}
+
+.scene-list li {
+  font-family: var(--sans);
+  font-size: 13px;
+  color: var(--ink-soft);
+  padding-left: 16px;
+  position: relative;
+}
+
+.scene-list li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 7px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+  opacity: 0.55;
+}
+
+.scene-signature {
+  font-family: var(--sans);
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 12px;
+}
+
+/* ============================================================
+   Quick access — editorial index list
+   ============================================================ */
+
+.index-list {
+  border-top: 1px solid var(--line-strong);
+}
+
+.index-row {
+  display: grid;
+  grid-template-columns: 56px 44px 1fr auto;
+  align-items: center;
+  gap: 18px;
+  padding: 20px 10px;
+  border-bottom: 1px solid var(--line);
+  text-decoration: none;
+  transition: background-color 0.15s;
+}
+
+.index-row:hover {
+  background: var(--surface-raise);
+}
+
+.index-num {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 15px;
+  color: var(--faint);
+}
+
+.index-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-small);
+  border: 1px solid var(--line);
+  color: var(--accent);
+  background: var(--surface);
+  display: grid;
+  place-items: center;
+}
+
+/* One quiet, individual wash per row */
+.index-row:nth-child(2) .index-icon {
+  color: #a05a38;
+  background: #f7efe7;
+  border-color: #e7d3c3;
+}
+
+.index-row:nth-child(3) .index-icon {
+  color: #8a7a34;
+  background: #f6f3e3;
+  border-color: #e4dcb9;
+}
+
+.index-row:nth-child(4) .index-icon {
+  color: #3f5b72;
+  background: #eef1f4;
+  border-color: #d3dce4;
+}
+
+.index-row:nth-child(5) .index-icon {
+  color: #6b5f76;
+  background: #f3f0f6;
+  border-color: #ddd6e3;
+}
+
+.index-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.index-title {
+  font-family: var(--serif);
+  font-size: 19px;
+  font-weight: 600;
+  color: var(--ink);
+  transition: color 0.15s;
+}
+
+.index-row:hover .index-title {
+  color: var(--accent);
+}
+
+.index-desc {
+  font-family: var(--sans);
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.index-arrow {
+  color: var(--muted);
+  transition: transform 0.15s, color 0.15s;
+}
+
+.index-row:hover .index-arrow {
+  transform: translateX(4px);
+  color: var(--accent);
+}
+
+/* ============================================================
+   Course cards (real API data)
+   ============================================================ */
+
+.course-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 18px;
+}
+
+.course-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  padding: 24px 24px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.course-card:hover {
+  border-color: var(--line-strong);
+  box-shadow: var(--shadow-tiny);
+}
+
+.course-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.course-mark {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-small);
+  border: 1px solid;
+  font-family: var(--serif);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  display: grid;
+  place-items: center;
+}
+
+.course-index {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 13px;
+  color: var(--faint);
+}
+
+.course-title {
+  font-family: var(--serif);
+  font-size: 21px;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.2px;
+  color: var(--ink);
+  margin: 0;
+}
+
+.course-meta {
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0;
+}
+
+.course-card-foot {
+  margin-top: auto;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.course-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--sans);
+  font-size: 12px;
+  color: var(--ink-soft);
+}
+
+.status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.course-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-soft);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+.course-link:hover {
+  color: var(--accent);
+}
+
+/* -------- Skeleton loading state -------- */
+
+.course-skeleton {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.skeleton {
+  border-radius: var(--radius-small);
+  background: #ece7da;
+  position: relative;
+  overflow: hidden;
+}
+
+.skeleton::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 253, 248, 0.6),
+    transparent
+  );
+  transform: translateX(-100%);
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  to {
+    transform: translateX(100%);
+  }
+}
+
+.skeleton-mark {
+  width: 44px;
+  height: 44px;
+}
+
+.skeleton-line {
+  height: 12px;
+}
+
+.w-40 {
+  width: 40%;
+}
+
+.w-70 {
+  width: 70%;
+}
+
+.w-95 {
+  width: 95%;
+}
+
+/* ============================================================
+   Error + empty states
+   ============================================================ */
+
+.error-panel {
+  background: var(--surface);
+  border: 1px solid var(--danger-line);
+  border-left: 3px solid var(--danger);
+  border-radius: var(--radius-card);
+  padding: 22px 24px;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.error-icon {
+  color: var(--danger);
+  margin-top: 2px;
+}
+
+.error-copy {
+  flex: 1 1 300px;
+}
+
+.error-title {
+  font-family: var(--serif);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--danger);
+  margin: 0 0 4px;
+}
+
+.error-detail,
+.error-hint {
+  font-family: var(--sans);
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  margin: 0;
+}
+
+.error-hint {
+  margin-top: 4px;
+  color: var(--muted);
+}
+
+.retry {
+  align-self: center;
+}
+
+.status-message {
+  font-family: var(--sans);
+  font-size: 15px;
+  color: var(--muted);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  padding: 28px 0;
+}
+
+/* ============================================================
+   Today — placeholder desk panel
+   ============================================================ */
+
+.today-panel {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.today-col {
+  padding: 26px 24px;
+}
+
+.today-col + .today-col {
+  border-left: 1px solid var(--line);
+}
+
+/* Full-width column used by the Recent resources dashboard panel */
+.today-col--wide {
+  grid-column: 1 / -1;
+}
+
+.today-label {
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 16px;
+}
+
+/* Column header with a "View all" action (Step 35 dead-end fix) */
+.today-label-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 0 0 16px;
+}
+
+.today-label-row .today-label {
+  margin: 0;
+}
+
+.today-view-all {
+  font-family: var(--sans);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 0.15s;
+}
+
+.today-view-all:hover {
+  color: var(--accent-ink);
+}
+
+.today-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.today-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+/* Row-level navigation link (same geometry as the former plain row) */
+.today-item-link {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  flex: 1;
+  min-width: 0;
+  color: inherit;
+  text-decoration: none;
+}
+
+.today-item-link:hover .today-item-text {
+  color: var(--accent);
+}
+
+.today-item-icon {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  border-radius: 6px;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  color: var(--accent);
+  display: grid;
+  place-items: center;
+}
+
+.today-item-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.today-item-text {
+  font-family: var(--serif);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--ink);
+}
+
+.today-item-meta {
+  font-family: var(--sans);
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* ============================================================
+   Footer
+   ============================================================ */
+
+.footer {
+  border-top: 1px solid var(--line);
+  background: var(--paper);
+  padding: 26px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  max-width: 1040px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.footer-brand {
+  font-family: var(--serif);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.footer-note {
+  font-family: var(--sans);
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* ============================================================
+   Selection + focus (small polish)
+   ============================================================ */
+
+::selection {
+  background: var(--accent-soft);
+  color: var(--ink);
+}
+
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ============================================================
+   Responsive — tablet
+   ============================================================ */
+
+@media (max-width: 880px) {
+  .main {
+    padding: 40px 20px 56px;
+  }
+
+  .header-inner {
+    padding: 0 20px;
+  }
+
+  .hero {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    padding-bottom: 56px;
+    margin-bottom: 56px;
+  }
+
+  .scene {
+    display: none; /* the scene stays desktop-only to keep mobile calm */
+  }
+
+  .today-panel {
+    grid-template-columns: 1fr;
+  }
+
+  .today-col + .today-col {
+    border-left: none;
+    border-top: 1px solid var(--line);
+  }
+}
+
+/* ============================================================
+   Responsive — mobile
+   ============================================================ */
+
+@media (max-width: 640px) {
+  .header-inner {
+    height: auto;
+    grid-template-columns: 1fr auto;
+    padding: 16px 18px;
+    gap: 14px 16px;
+  }
+
+  .brand {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .profile {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .nav {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    justify-self: stretch;
+    justify-content: space-between;
+    gap: 8px 14px;
+    flex-wrap: wrap;
+    padding-top: 12px;
+    border-top: 1px solid var(--line);
+  }
+
+  .nav-link {
+    font-size: 13px;
+    padding: 4px 0;
+  }
+
+  .profile-info {
+    display: none;
+  }
+
+  .main {
+    padding: 28px 18px 48px;
+  }
+
+  .section {
+    margin-bottom: 52px;
+  }
+
+  .section-head {
+    align-items: flex-start;
+  }
+
+  .section-head h2 {
+    font-size: 25px;
+  }
+
+  .hero {
+    padding: 10px 0 40px;
+    margin-bottom: 52px;
+  }
+
+  .hero-title {
+    font-size: 40px;
+    letter-spacing: -1px;
+  }
+
+  .hero-actions {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  /* Index rows become tighter, two-part rows */
+  .index-row {
+    grid-template-columns: 34px 38px 1fr;
+    gap: 12px;
+    padding: 16px 4px;
+  }
+
+  .index-arrow {
+    display: none;
+  }
+
+  .index-num {
+    font-size: 13px;
+  }
+
+  .course-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .course-card {
+    padding: 20px 18px 16px;
+  }
+
+  .footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    padding: 22px 18px;
+  }
+}
+
+/* ============================================================
+   Notes page
+   ============================================================ */
+
+/* Right-aligned group in the section heading (tag + Create button) */
+.section-head-actions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.section-head-actions .tag {
+  margin-left: 0;
+}
+
+.btn-sm {
+  padding: 9px 16px;
+  font-size: 13px;
+}
+
+/* Skeleton line widths used by the notes page */
+.w-30 {
+  width: 30%;
+}
+
+.w-80 {
+  width: 80%;
+}
+
+/* Success banner after saving a note */
+.form-success {
+  font-family: var(--sans);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--accent-ink);
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-line);
+  border-radius: var(--radius-small);
+  padding: 12px 16px;
+  margin-bottom: 20px;
+}
+
+/* -------- Create-note form -------- */
+
+.note-form,
+.assignment-form,
+.planner-form {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  padding: 26px;
+  margin-bottom: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.field label {
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.field input,
+.field textarea,
+.field select {
+  font-family: var(--sans);
+  font-size: 14px;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-small);
+  padding: 11px 13px;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.field input::placeholder,
+.field textarea::placeholder {
+  color: var(--faint);
+}
+
+.field input:focus,
+.field textarea:focus,
+.field select:focus {
+  border-color: var(--accent);
+}
+
+.field textarea {
+  resize: vertical;
+  min-height: 110px;
+  line-height: 1.6;
+}
+
+.field select {
+  cursor: pointer;
+}
+
+.form-error {
+  font-family: var(--sans);
+  font-size: 13px;
+  color: var(--danger);
+  margin: 0;
+}
+
+.form-actions {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.form-actions .btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* -------- Notes search (client-side narrowing of the notes already shown) -------- */
+
+.notes-search {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.notes-search-label {
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.notes-search-input {
+  flex: 1;
+  max-width: 420px;
+  font-family: var(--sans);
+  font-size: 14px;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-small);
+  padding: 9px 13px;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.notes-search-input::placeholder {
+  color: var(--faint);
+}
+
+.notes-search-input:focus {
+  border-color: var(--accent);
+}
+
+.status-hint {
+  color: var(--faint);
+}
+
+/* -------- Note card delete action -------- */
+
+.note-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  margin-left: auto;
+}
+
+.note-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--sans);
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--ink-soft);
+  background: none;
+  border: none;
+  border-bottom: 1px solid transparent;
+  padding: 2px 0;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.note-action:hover:not(:disabled) {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.note-action--danger {
+  color: var(--danger);
+}
+
+.note-action--danger:hover:not(:disabled) {
+  color: #7d3223;
+  border-color: #7d3223;
+}
+
+.note-action:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.form-title {
+  font-family: var(--serif);
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.2px;
+  color: var(--ink);
+  margin: 0;
+}
+
+/* -------- Notes grid + cards -------- */
+
+.note-grid,
+.assignment-grid,
+.planner-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 18px;
+}
+
+.note-card,
+.assignment-card,
+.planner-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  padding: 22px 24px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.note-card:hover,
+.planner-card:hover {
+  border-color: var(--line-strong);
+  box-shadow: var(--shadow-tiny);
+}
+
+.note-card-top,
+.assignment-card-top,
+.planner-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.note-index,
+.assignment-index,
+.planner-index {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 13px;
+  color: var(--faint);
+}
+
+.note-date,
+.assignment-due,
+.planner-date {
+  font-family: var(--sans);
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.note-title,
+.assignment-title,
+.planner-title {
+  font-family: var(--serif);
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.2px;
+  color: var(--ink);
+  margin: 0;
+}
+
+.note-preview,
+.assignment-preview,
+.planner-preview {
+  font-family: var(--sans);
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--muted);
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.note-card-foot {
+  margin-top: auto;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.course-chip {
+  flex-shrink: 0;
+  font-family: var(--serif);
+  font-size: 12px;
+  font-weight: 700;
+  border: 1px solid;
+  border-radius: 999px;
+  padding: 3px 11px;
+}
+
+/* Resource type chip on resource cards (mirrors .course-chip, neutral) */
+.note-type {
+  flex-shrink: 0;
+  font-family: var(--sans);
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 3px 11px;
+}
+
+.note-course-name,
+.assignment-course-name,
+.planner-course-name {
+  font-family: var(--sans);
+  font-size: 12.5px;
+  color: var(--ink-soft);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Note loading skeletons */
+.note-skeleton,
+.assignment-skeleton,
+.planner-skeleton {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  padding: 22px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* ============================================================
+   Assignments page
+   ============================================================ */
+
+/* The due "no date" state is quieter and italic like a marginal note */
+.assignment-due--none,
+.planner-date--none {
+  color: var(--faint);
+  font-style: italic;
+}
+
+/* Assignment descriptions may run a little longer than note previews */
+.assignment-preview,
+.planner-preview {
+  -webkit-line-clamp: 3;
+}
+
+.assignment-preview--empty,
+.planner-preview--empty {
+  color: var(--faint);
+  font-style: italic;
+  -webkit-line-clamp: 2;
+}
+
+/* Course chip + full course name row */
+.assignment-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+/* Footer: status pill on the left, quiet actions on the right */
+.assignment-card-foot {
+  margin-top: auto;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 600;
+  border: 1px solid;
+  border-radius: 999px;
+  padding: 3px 12px;
+}
+
+.status-pill::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.assignment-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.assignment-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--sans);
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--ink-soft);
+  background: none;
+  border: none;
+  border-bottom: 1px solid transparent;
+  padding: 2px 0;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.assignment-action:hover:not(:disabled) {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.assignment-action--danger {
+  color: var(--danger);
+}
+
+.assignment-action--danger:hover:not(:disabled) {
+  color: #7d3223;
+  border-color: #7d3223;
+}
+
+.assignment-action:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* ============================================================
+   Notes + Assignments pages responsive
+   ============================================================ */
+
+@media (max-width: 640px) {
+  .section-head-actions {
+    width: 100%;
+    justify-content: space-between;
+    margin-left: 0;
+  }
+
+  .note-form,
+  .assignment-form,
+  .planner-form {
+    padding: 20px 18px;
+  }
+
+  .note-grid,
+  .assignment-grid,
+  .planner-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .note-card,
+  .assignment-card,
+  .planner-card {
+    padding: 20px 18px 16px;
+  }
+
+  .form-actions {
+    flex-wrap: wrap;
+  }
+}
+
+/* ============================================================
+   Dashboard — live Today desk (quick actions + live columns)
+   ============================================================ */
+
+/* Quick actions: a quiet row of create buttons above the desk panel */
+.quick-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+/* Per-column loading skeletons inside the Today desk */
+.today-loading {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.today-loading .skeleton {
+  display: block;
+}
+
+/* Per-column empty states — quiet italic margin notes */
+.today-empty,
+.planner-empty {
+  font-family: var(--sans);
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--muted);
+  font-style: italic;
+  margin: 2px 0 0;
+}
+
+/* Per-column errors — one section failing never hides the others */
+.today-error {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.today-error-title {
+  font-family: var(--serif);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--danger);
+  margin: 0;
+}
+
+.today-error-detail {
+  font-family: var(--sans);
+  font-size: 12px;
+  color: var(--muted);
+  margin: 0 0 8px;
+}
+
+.today-retry {
+  align-self: flex-start;
+  font-family: var(--sans);
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--accent);
+  background: none;
+  border: none;
+  border-bottom: 1px solid currentColor;
+  padding: 0 0 2px;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.today-retry:hover {
+  color: var(--accent-ink);
+}
+
+/* Empty-state links (Step 35 dead-end fix) */
+.today-empty-link {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.today-empty-link:hover {
+  color: var(--accent-ink);
+}
+
+/* Featured "nearest deadline" block inside the Today desk — now a link to
+   the Assignments page (Step 35 dead-end fix) */
+a.deadline-card {
+  display: block;
+  text-decoration: none;
+}
+
+a.deadline-card:hover .deadline-title {
+  color: var(--accent);
+}
+
+.deadline-card {
+  border-left: 2px solid var(--accent);
+  padding: 2px 0 4px 16px;
+}
+
+.deadline-title {
+  font-family: var(--serif);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.2px;
+  color: var(--ink);
+  margin: 8px 0;
+}
+
+.deadline-meta {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
+  font-family: var(--sans);
+  font-size: 12.5px;
+  color: var(--muted);
+  margin: 0;
+}
+
+.deadline-date {
+  color: var(--accent-ink);
+  font-weight: 600;
+}
+
+/* ============================================================
+   Study Planner page
+   ============================================================ */
+
+/* Two short fields sit side by side in the create form */
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+/* Task groups: Today's / Upcoming / Completed */
+.planner-groups {
+  display: flex;
+  flex-direction: column;
+  gap: 44px;
+}
+
+.planner-group-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--line-strong);
+  margin-bottom: 18px;
+}
+
+.planner-group-title {
+  font-family: var(--serif);
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+  color: var(--ink);
+  margin: 0;
+}
+
+.planner-group-head .tag {
+  margin-left: 0;
+}
+
+/* Priority pill in the card top (clay = high, ochre = medium, sage = low) */
+.priority-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--sans);
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  border: 1px solid;
+  border-radius: 999px;
+  padding: 2px 10px;
+}
+
+.priority-pill::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+/* Course chip + full course name row */
+.planner-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+/* Footer: date + status on the left, quiet actions on the right */
+.planner-card-foot {
+  margin-top: auto;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.planner-card-foot-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.planner-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.planner-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--sans);
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--ink-soft);
+  background: none;
+  border: none;
+  border-bottom: 1px solid transparent;
+  padding: 2px 0;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.planner-action:hover:not(:disabled) {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.planner-action--danger {
+  color: var(--danger);
+}
+
+.planner-action--danger:hover:not(:disabled) {
+  color: #7d3223;
+  border-color: #7d3223;
+}
+
+.planner-action:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* Completed tasks sit quietly at the bottom of the plan */
+.planner-card--completed .planner-index {
+  font-style: normal;
+  color: var(--accent);
+}
+
+.planner-card--completed .planner-title {
+  color: var(--muted);
+  font-style: italic;
+  font-weight: 500;
+}
+
+/* ============================================================
+   AI Study Planner — generation + review panel (Planner page)
+   Matches the assistant page's visual language: a surfaced card
+   with a labelled question box, a loading state, and a result
+   block. Mirrors .assistant-form / .assistant-loading.
+   ============================================================ */
+
+.ai-plan {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  padding: 28px 24px;
+  margin-bottom: 30px;
+}
+
+.ai-plan-intro {
+  margin-bottom: 18px;
+}
+
+.ai-plan-intro .kicker {
+  margin-bottom: 5px;
+}
+
+.ai-plan-title {
+  font-family: var(--serif);
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+  color: var(--ink);
+  margin: 0 0 6px;
+}
+
+.ai-plan-helper {
+  font-family: var(--sans);
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--muted);
+  margin: 0;
+}
+
+.ai-plan-form {
+  margin: 0 0 6px;
+}
+
+.ai-plan-loading-label {
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-soft);
+  margin: 0 0 10px;
+}
+
+.ai-plan-error {
+  margin-top: 18px;
+}
+
+/* Save confirmation inside the AI panel (reuses .form-success styling) */
+.ai-plan-save-success {
+  margin: 0 0 18px;
+}
+
+/* Proposed-session review list */
+.ai-plan-results {
+  border-top: 1px solid var(--line-strong);
+  padding-top: 24px;
+  margin-top: 24px;
+}
+
+.ai-plan-results-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.ai-plan-results-label {
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.ai-plan-edit-hint {
+  font-family: var(--sans);
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--muted);
+  margin: 0 0 18px;
+}
+
+.ai-plan-list {
+  list-style: none;
+  margin: 0 0 22px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.ai-plan-session {
+  background: var(--surface-raise);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  padding: 20px 22px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.ai-plan-session-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.ai-plan-session-index {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 13px;
+  color: var(--faint);
+}
+
+.ai-plan-foot {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.ai-plan-foot-note {
+  font-family: var(--sans);
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--muted);
+  margin: 0;
+}
+
+@media (max-width: 640px) {
+  .ai-plan {
+    padding: 20px 18px;
+  }
+
+  .ai-plan-results-head {
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 640px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ============================================================
+   Dashboard — Study planner preview (two columns)
+   ============================================================ */
+
+/* Two-column variant of the "At a glance" panel, used for the live
+   study-task preview on the dashboard. Stacks like the original panel. */
+.today-panel--two {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+@media (max-width: 880px) {
+  .today-panel--two {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ============================================================
+   AI Assistant page
+   ============================================================ */
+
+.assistant-form {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  padding: 28px 24px;
+  margin-bottom: 26px;
+}
+
+.assistant-loading {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.assistant-empty {
+  text-align: center;
+  padding: 48px 24px;
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--radius-card);
+  background: var(--surface-raise);
+}
+
+.assistant-empty-icon {
+  width: 44px;
+  height: 44px;
+  margin: 0 auto 14px;
+  border-radius: 50%;
+  border: 1px solid var(--accent-line);
+  background: var(--accent-soft);
+  color: var(--accent);
+  display: grid;
+  place-items: center;
+}
+
+.assistant-empty-title {
+  font-family: var(--serif);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--ink);
+  margin: 0 0 6px;
+}
+
+.assistant-empty-text {
+  font-family: var(--sans);
+  font-size: 14px;
+  color: var(--muted);
+  margin: 0;
+}
+
+.assistant-answer {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--accent);
+  border-radius: var(--radius-card);
+  padding: 26px 24px;
+}
+
+.assistant-answer-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 12px;
+}
+
+.assistant-answer-label {
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.assistant-question {
+  font-family: var(--serif);
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--ink);
+  margin: 0 0 14px;
+}
+
+.assistant-answer-text {
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--ink-soft);
+  white-space: pre-wrap;
+  margin: 0;
+}
+
+/* ============================================================
+   Sign in / Sign up
+   ============================================================ */
+
+.auth-panel {
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 72px 20px 88px;
+}
+
+.auth-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  padding: 40px 36px 32px;
+}
+
+.auth-title {
+  font-family: var(--serif);
+  font-size: 30px;
+  line-height: 1.15;
+  font-weight: 600;
+  color: var(--ink);
+  margin: 8px 0 10px;
+}
+
+.auth-lede {
+  font-family: var(--sans);
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--muted);
+  margin: 0 0 26px;
+}
+
+.auth-toggle {
+  display: flex;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-small);
+  overflow: hidden;
+  margin-bottom: 26px;
+}
+
+.auth-toggle button {
+  flex: 1;
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  padding: 10px 12px;
+  background: var(--surface);
+  color: var(--muted);
+  border: 0;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.auth-toggle button:hover {
+  color: var(--ink);
+}
+
+.auth-toggle button.is-active {
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.auth-note {
+  font-family: var(--sans);
+  font-size: 12px;
+  color: var(--muted);
+  margin: 22px 0 0;
+  text-align: center;
+}
+
+/* Signed-out / session-restore splash */
+.auth-splash {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  min-height: 56vh;
+  text-align: center;
+}
+
+/* Sign-out button in the header profile area */
+.profile-logout {
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  background: none;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-small);
+  padding: 6px 10px;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.profile-logout:hover {
+  color: var(--accent-ink);
+  border-color: var(--accent-line);
+}
+
+@media (max-width: 640px) {
+  .auth-card {
+    padding: 32px 24px 28px;
+  }
+
+  .auth-title {
+    font-size: 26px;
+  }
+}
+
+/* ============================================================
+   Courses page — selected-course detail view
+   ============================================================ */
+
+/* Back-to-courses action in the detail header */
+.course-detail-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  align-self: flex-start;
+}
+
+/* Flip the right-pointing arrow icon so it points back */
+.course-back-icon {
+  transform: rotate(180deg);
+}
+
+/* Course identity row: code mark + name / code / added copy */
+.course-detail-head {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.course-detail-head .course-mark {
+  width: 58px;
+  height: 58px;
+  font-size: 15px;
+  flex: 0 0 auto;
+}
+
+.course-detail-head .course-title {
+  font-size: 30px;
+  margin: 6px 0;
+}
+
+/* Counts strip under the identity row */
+.course-detail-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.course-detail-stats .tag {
+  margin-left: 0;
+}
+
+/* Tighter section rhythm on the detail page than the default 72px */
+.course-detail-section {
+  margin-bottom: 48px;
+}
+
+.course-detail-section:last-child {
+  margin-bottom: 0;
+}
+
+/* Quiet "view all" link at the foot of each detail section */
+.course-detail-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 22px;
+}
+
+/* Course-context banner on the Notes / Assignments pages (#notes?course=…,
+   #assignments?course=…): chip + label + "View all" clear action.
+   Shared by both pages — add a course filter to a page and it shows this. */
+.course-filter {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+  padding: 12px 16px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+}
+
+.course-filter-label {
+  font-family: var(--serif);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.course-filter .course-filter-clear {
+  margin-left: auto;
+}
+
+@media (max-width: 640px) {
+  .course-filter .course-filter-clear {
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 640px) {
+  .course-detail-head {
+    gap: 14px;
+  }
+
+  .course-detail-head .course-title {
+    font-size: 24px;
+  }
+}
