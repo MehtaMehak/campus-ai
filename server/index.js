@@ -9,6 +9,7 @@ const auth = require("./auth");
 const rateLimit = require("express-rate-limit");
 
 const app = express();
+app.set("trust proxy", 1);
 const PORT = process.env.PORT || 5000;
 
 // Browser frontend (Vite dev server) calls the API cross-origin. The allowed
@@ -166,7 +167,7 @@ app.post("/api/auth/signup", async (req, res) => {
   }
 });
 
-// POST /api/auth/login — sign in with email + password.
+//  — sign in with email + password.
 // The same generic message is returned for a wrong email or a wrong password
 // so the endpoint doesn't reveal which accounts exist.
 app.post("/api/auth/login", async (req, res) => {
@@ -293,7 +294,6 @@ app.get("/api/notes", auth.requireAuth, async (req, res) => {
 // GET /api/notes/:id — one of the logged-in user's notes with its course info
 app.get("/api/notes/:id", auth.requireAuth, async (req, res) => {
   const id = Number(req.params.id);
-
   if (!Number.isInteger(id) || id <= 0) {
     return res.status(400).json({
       error: "Invalid note id",
