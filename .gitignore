@@ -25,3 +25,8 @@ client/.env
 server/.env.*
 client/.env.*
 !.env.example
+.vercel
+.env*
+
+!.env.example
+!**/.env.example
