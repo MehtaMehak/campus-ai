@@ -75,10 +75,20 @@ npm run lint
 
 - Passwords are hashed with **bcryptjs** — plaintext is never stored or logged.
 - On signup/login the server sets an **httpOnly** cookie, `campus_session`
-  (SameSite=Lax, 7-day expiry, `secure:false` on the local HTTP dev setup).
+  (7-day expiry; SameSite=Lax and `secure:false` for local HTTP development;
+  SameSite=None and Secure when `NODE_ENV=production`, for Vercel → Render).
 - The cookie carries a signed JWT; every protected route verifies it and scopes
   all queries to the signed-in `user_id`.
 - Sign out clears the cookie server-side.
+- API mutations require an `Origin` header matching the production frontend
+  (`https://campus-ai-virid.vercel.app`), or `http://localhost:5173` outside
+  production. Missing, opaque, and untrusted origins receive 403. Non-browser
+  clients must also supply an allowed Origin for mutations.
+- Production browsers must allow the cross-site session cookie. If third-party
+  cookies are blocked, use a same-origin API proxy or same-site custom domains.
+- Run `node --test server/session-security.test.js` from the repository root for
+  isolated cookie, session restoration, logout, CORS, and origin checks. These
+  tests use synthetic tokens and a local fixture server; no database is used.
 
 ### API endpoints
 

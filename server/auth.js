@@ -65,30 +65,28 @@ function verifyToken(token) {
 
 /* -------- the session cookie -------- */
 
-// httpOnly: JS can't read it (safe against XSS token theft).
-// SameSite=Lax still lets the cookie travel from http://localhost:5173 to
-// http://localhost:5000 — same site (same host), different port — so the
-// SPA can authenticate without storing the token anywhere.
-// secure is environment-driven: false over plain http in local dev
-// (NODE_ENV unset/non-production), true only when NODE_ENV=production
-// (the deployed app runs behind HTTPS).
+// Vercel -> Render requests are cross-site and require SameSite=None over
+// HTTPS. Local HTTP development keeps Lax. Share options with logout so it
+// clears the same cookie. Unsafe API requests also require a trusted Origin.
+function sessionCookieOptions() {
+  const production = process.env.NODE_ENV === "production";
+  return {
+    httpOnly: true,
+    sameSite: production ? "none" : "lax",
+    secure: production,
+    path: "/",
+  };
+}
+
 function setSessionCookie(res, token) {
   res.cookie(COOKIE_NAME, token, {
-    httpOnly: true,
-    sameSite: "lax",
-    secure: process.env.NODE_ENV === "production",
-    path: "/",
+    ...sessionCookieOptions(),
     maxAge: COOKIE_MAX_AGE_MS,
   });
 }
 
 function clearSessionCookie(res) {
-  res.clearCookie(COOKIE_NAME, {
-    httpOnly: true,
-    sameSite: "lax",
-    secure: process.env.NODE_ENV === "production",
-    path: "/",
-  });
+  res.clearCookie(COOKIE_NAME, sessionCookieOptions());
 }
 
 /* -------- Express middleware -------- */

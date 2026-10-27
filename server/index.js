@@ -7,25 +7,20 @@ const db = require("./db");
 const { generateAnswer, generatePlan } = require("./ai");
 const auth = require("./auth");
 const rateLimit = require("express-rate-limit");
+const { allowedOrigins, requireTrustedOrigin } = require("./request-security");
 
 const app = express();
 app.set("trust proxy", 1);
 const PORT = process.env.PORT || 5000;
 
-// Browser frontend (Vite dev server) calls the API cross-origin. The allowed
-// origin comes from FRONTEND_URL — set to the deployed frontend's origin in
-// production; the default keeps local dev on the Vite dev server. credentials:
-// true lets the httpOnly session cookie travel between the frontend and the
-// API. No wildcard: cookie auth means the origin must always be explicit.
+// CORS and unsafe-request origin validation share an explicit allowlist.
 app.use(
   cors({
-origin: [
-  "http://localhost:5173",
-  "https://campus-ai-virid.vercel.app"
-],
+    origin: allowedOrigins,
     credentials: true,
   })
 );
+app.use("/api", requireTrustedOrigin);
 app.use(express.json());
 app.use(cookieParser());
 
