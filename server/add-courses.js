@@ -1,19 +1,9 @@
 require("dotenv").config();
 const { Client } = require("pg");
 
-const dbUrl = new URL(process.env.DATABASE_URL);
+const { getDatabaseConfig } = require("./db-config");
 
-const client = new Client({
-  host: "3.141.122.14",
-  port: 5432,
-  user: decodeURIComponent(dbUrl.username),
-  password: decodeURIComponent(dbUrl.password),
-  database: dbUrl.pathname.slice(1),
-  ssl: {
-    rejectUnauthorized: false,
-  },
-  options: "endpoint=ep-little-dust-b5h9s7m7",
-});
+const client = new Client(getDatabaseConfig(process.env.DATABASE_URL));
 
 async function addCourses() {
   try {

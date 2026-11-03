@@ -9,26 +9,17 @@
    query() / healthCheck() surface is exposed; the Pool itself stays
    internal so unrelated code cannot depend on it.
 
-   The connection config intentionally mirrors the previous
-   singleton Client exactly — discrete fields, NOT the raw
-   DATABASE_URL string — so ssl / channel_binding behavior is
-   unchanged (the URL's query parameters are not applied by pg when
-   a discrete config object is used).
-
-   The Pool location (host + port) is read from DATABASE_URL, so the
-   app follows whatever endpoint the connection string points at
-   (Neon direct vs pooled) instead of a hard-coded host. The old
-   Neon IP and its `options=endpoint=…` routing parameter were
-   coupled to a single fixed host and have been removed. IPv4-first
-   DNS ordering + disabled auto-family selection (see module body)
-   compensate for a dead IPv6 route on dev networks; the SSL and
-   channel-binding behavior is otherwise exactly as before.
+   Runtime and utilities share strict certificate/hostname verification
+   through db-config.js. The URL chooses the DNS endpoint; URL query
+   parameters cannot override TLS. IPv4 selection below only affects
+   transport address selection, not the hostname used for verification.
    ============================================================ */
 
 require("dotenv").config();
 const dns = require("node:dns");
 const net = require("node:net");
 const { Pool } = require("pg");
+const { getDatabaseConfig } = require("./db-config");
 
 // The Neon pooler publishes IPv6 (AAAA) records, but the IPv6 route on this
 // network is dead (ENETUNREACH). Under Node 24's default auto-select-family
@@ -40,17 +31,8 @@ const { Pool } = require("pg");
 dns.setDefaultResultOrder("ipv4first");
 net.setDefaultAutoSelectFamily(false);
 
-const dbUrl = new URL(process.env.DATABASE_URL);
-
 const pool = new Pool({
-  host: dbUrl.hostname,
-  port: Number(dbUrl.port || 5432),
-  user: decodeURIComponent(dbUrl.username),
-  password: decodeURIComponent(dbUrl.password),
-  database: dbUrl.pathname.slice(1),
-  ssl: {
-    rejectUnauthorized: false,
-  },
+  ...getDatabaseConfig(process.env.DATABASE_URL),
   max: 10, // pg-pool default kept explicit; not over-tuned
 });
 

@@ -115,8 +115,8 @@ async function generateAnswer(question) {
 // runaway plan from ever reaching the student.
 const MAX_PLAN_SESSIONS = 20;
 
-// The only priorities the planner understands (lowercase). The UI's
-// Low/Medium/High options map onto these exactly.
+// Gemini uses lowercase priorities; the public plan response uses the same
+// Low/Medium/High contract as the review UI and existing study tasks.
 const PLAN_PRIORITIES = new Set(["low", "medium", "high"]);
 
 // Request JSON mode: Gemini is asked to return exactly this object shape.
@@ -239,7 +239,8 @@ function parsePlanSession(raw, courseIds, index) {
     );
   }
 
-  return { title, courseId, date: raw.date, priority };
+  const taskPriority = priority[0].toUpperCase() + priority.slice(1);
+  return { title, courseId, date: raw.date, priority: taskPriority };
 }
 
 // Parse + strictly validate Gemini's reply into a sessions array.

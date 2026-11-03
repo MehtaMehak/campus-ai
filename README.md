@@ -39,6 +39,19 @@ Create `server/.env` with these variables (never commit it):
 | `GEMINI_API_KEY` | ✅       | Google AI Studio key used by the AI assistant       |
 | `JWT_SECRET`     | ✅       | Secret used to sign session cookies. Generate one with: `node -e "console.log(require('crypto').randomBytes(48).toString('base64url'))"` |
 
+All database connections share `server/db-config.js`. Use the Neon DNS hostname
+(direct or pooled), not an IP address. TLS verifies the certificate chain and
+hostname using Node's trusted CAs. No Render environment change is normally
+needed. URL query parameters (including SSL, channel-binding, and endpoint
+options) are deliberately not forwarded to `pg`; they cannot override the
+explicit TLS configuration. Channel-binding behavior is unchanged.
+
+`node --test server/db-config.test.js` checks synthetic URLs and mocked
+connections only. It never connects to Neon or executes SQL against a real
+database. Despite its name, `server/test-db.js` creates a table; do not run it as
+a connectivity test. Certificate failures must be investigated, not bypassed
+by disabling verification.
+
 Then create/migrate the schema and seed the public data:
 
 ```bash

@@ -8,6 +8,7 @@ const { generateAnswer, generatePlan } = require("./ai");
 const auth = require("./auth");
 const rateLimit = require("express-rate-limit");
 const { allowedOrigins, requireTrustedOrigin } = require("./request-security");
+const { validateInput } = require("./input-validation");
 
 const app = express();
 app.set("trust proxy", 1);
@@ -116,7 +117,7 @@ function publicUser(user) {
 
 // POST /api/auth/signup — create an account and log straight in.
 // Password is hashed with bcrypt before it is ever stored.
-app.post("/api/auth/signup", async (req, res) => {
+app.post("/api/auth/signup", validateInput("signup"), async (req, res) => {
   const { name, email, password } = req.body || {};
 
   if (typeof name !== "string" || name.trim() === "") {
@@ -148,10 +149,14 @@ app.post("/api/auth/signup", async (req, res) => {
     const result = await db.query(
       `INSERT INTO users (name, email, password_hash)
        VALUES ($1, $2, $3)
+       ON CONFLICT (email) DO NOTHING
        RETURNING id, name, email`,
       [name.trim(), cleanEmail, passwordHash]
     );
 
+    if (result.rows.length === 0) {
+      return res.status(409).json({ error: "An account with this email already exists" });
+    }
     const user = result.rows[0];
     auth.setSessionCookie(res, auth.signToken(user));
     res.status(201).json({ user: publicUser(user) });
@@ -165,7 +170,7 @@ app.post("/api/auth/signup", async (req, res) => {
 //  — sign in with email + password.
 // The same generic message is returned for a wrong email or a wrong password
 // so the endpoint doesn't reveal which accounts exist.
-app.post("/api/auth/login", async (req, res) => {
+app.post("/api/auth/login", validateInput("login"), async (req, res) => {
   const { email, password } = req.body || {};
 
   if (
@@ -324,7 +329,7 @@ app.get("/api/notes/:id", auth.requireAuth, async (req, res) => {
 });
 
 // POST /api/notes — create a new note owned by the logged-in user
-app.post("/api/notes", auth.requireAuth, async (req, res) => {
+app.post("/api/notes", auth.requireAuth, validateInput("notes"), async (req, res) => {
   const { title, content, course_id } = req.body || {};
 
   // 1. Validate the three required fields
@@ -409,7 +414,7 @@ app.delete("/api/notes/:id", auth.requireAuth, async (req, res) => {
 });
 
 // PATCH /api/notes/:id — update one of the logged-in user's notes
-app.patch("/api/notes/:id", auth.requireAuth, async (req, res) => {
+app.patch("/api/notes/:id", auth.requireAuth, validateInput("notes"), async (req, res) => {
   const id = Number(req.params.id);
 
   if (!Number.isInteger(id) || id <= 0) {
@@ -516,9 +521,10 @@ app.patch("/api/notes/:id", auth.requireAuth, async (req, res) => {
 function isValidDate(value) {
   if (typeof value !== "string") return false;
   if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
+  if (value.startsWith("0000-")) return false; // PostgreSQL has no year zero.
 
   const date = new Date(value + "T00:00:00Z");
-  return !Number.isNaN(date.getTime());
+  return !Number.isNaN(date.getTime()) && date.toISOString().slice(0, 10) === value;
 }
 
 // GET /api/assignments — the logged-in user's assignments with course info,
@@ -603,7 +609,7 @@ app.get("/api/assignments/:id", auth.requireAuth, async (req, res) => {
 });
 
 // POST /api/assignments — create a new assignment owned by the logged-in user
-app.post("/api/assignments", auth.requireAuth, async (req, res) => {
+app.post("/api/assignments", auth.requireAuth, validateInput("assignments"), async (req, res) => {
   const { title, description, course_id, due_date, status } = req.body || {};
 
   // 1. Validate the required fields
@@ -665,7 +671,7 @@ app.post("/api/assignments", auth.requireAuth, async (req, res) => {
 });
 
 // PATCH /api/assignments/:id — update parts of the logged-in user's assignment
-app.patch("/api/assignments/:id", auth.requireAuth, async (req, res) => {
+app.patch("/api/assignments/:id", auth.requireAuth, validateInput("assignments"), async (req, res) => {
   const id = Number(req.params.id);
 
   if (!Number.isInteger(id) || id <= 0) {
@@ -903,7 +909,7 @@ app.get("/api/study-tasks/:id", auth.requireAuth, async (req, res) => {
 });
 
 // POST /api/study-tasks — create a new study task owned by the logged-in user
-app.post("/api/study-tasks", auth.requireAuth, async (req, res) => {
+app.post("/api/study-tasks", auth.requireAuth, validateInput("tasks"), async (req, res) => {
   const { title, description, course_id, study_date, priority, status } =
     req.body || {};
 
@@ -986,7 +992,7 @@ app.post("/api/study-tasks", auth.requireAuth, async (req, res) => {
 });
 
 // PATCH /api/study-tasks/:id — update parts of the logged-in user's task
-app.patch("/api/study-tasks/:id", auth.requireAuth, async (req, res) => {
+app.patch("/api/study-tasks/:id", auth.requireAuth, validateInput("tasks"), async (req, res) => {
   const id = Number(req.params.id);
 
   if (!Number.isInteger(id) || id <= 0) {
@@ -1248,7 +1254,7 @@ app.get("/api/resources/:id", auth.requireAuth, async (req, res) => {
 });
 
 // POST /api/resources — create a new resource owned by the logged-in user
-app.post("/api/resources", auth.requireAuth, async (req, res) => {
+app.post("/api/resources", auth.requireAuth, validateInput("resources"), async (req, res) => {
   const { title, description, url, resource_type, course_id } = req.body || {};
 
   // 1. Validate the required fields
@@ -1323,7 +1329,7 @@ app.post("/api/resources", auth.requireAuth, async (req, res) => {
 });
 
 // PATCH /api/resources/:id — update one of the logged-in user's resources
-app.patch("/api/resources/:id", auth.requireAuth, async (req, res) => {
+app.patch("/api/resources/:id", auth.requireAuth, validateInput("resources"), async (req, res) => {
   const id = Number(req.params.id);
 
   if (!Number.isInteger(id) || id <= 0) {

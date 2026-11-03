@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test": "node --test session-security.test.js"
+    "test": "node --test session-security.test.js api-validation.test.js db-config.test.js"
   },
   "keywords": [],
   "author": "",
